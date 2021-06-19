@@ -1,7 +1,9 @@
-#include <iostream>
+void setup() {
+    // put your setup code here, to run once:
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
-    printf("Hello World");
-    return 0;
+}
+
+void loop() {
+    // put your main code here, to run repeatedly:
+
 }
