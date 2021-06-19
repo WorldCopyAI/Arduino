@@ -1,6 +1,6 @@
 void setup() {
     // put your setup code here, to run once:
-    int i = 1;
+    int i = 2;
 }
 
 void loop() {
