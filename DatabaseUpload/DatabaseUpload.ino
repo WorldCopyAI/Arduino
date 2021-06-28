@@ -10,7 +10,7 @@ void setup() { Serial.begin(9600);
     delay(1000);
     ESP8266.println("AT+CWMODE=3\r\n"); //모드 3번 AP +Station Mode, 디바이이스 + AP 기능
     delay(1000);
-    ESP8266.println("AT+CWJAP=\"공유기아이디\",\"공유기비밀번호\"\"\r\n"); //공유기 접속
+    ESP8266.println("AT+CWJAP=\"Test\",\"test1234\"\"\r\n"); //공유기 접속
     delay(3000);
 }
 
