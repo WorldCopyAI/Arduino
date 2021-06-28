@@ -14,7 +14,7 @@ void setup() {
 
 void loop() {
 
- 
+ Serial.println(s.available());
 
   if(s.available()>0) {
 
