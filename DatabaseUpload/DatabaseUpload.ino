@@ -27,11 +27,12 @@ void loop() {
     //다중접속 설정을 1로한다.
     delay(1000);
     printResponse();
-    ESP8266.println("AT+CIPSTART=4,\"TCP\",\"서버의아이피\",80"); //포트연결
+    ESP8266.println("AT+CIPSTART=4,\"TCP\",\"211.207.147.143\",80"); //포트연결
     delay(1000);
     printResponse();
-    String StsensorValue = String(sensorValue); //int형으로 가져온 센서값을 String으로 변환
-    String cmd = "GET http://localhost/write_data.php?num=" + StsensorValue + " HTTP/1.0";
+    String name = "테스트";
+    String email = "test@test.com";
+    String cmd = "GET http://211.207.147.143/DatabaseUpload.php?name=" + name + "&email=" + email + " HTTP/1.0";
 
     //GET할 주소 형식은 HTTP/1.0
     ESP8266.println("AT+CIPSEND=4," + String(cmd.length() + 4)); //데이터 전송
@@ -43,4 +44,3 @@ void loop() {
     delay(200);
     printResponse();
 }
-
