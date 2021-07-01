@@ -13,10 +13,11 @@ if (mysqli_connect_errno()){
 }
 else {
     echo "DB : \"$db_name\"에 접속 성공.<br/>";
+    var_dump($_GET);
     $name=$_GET["name"];
     $email=$_GET["email"];
-    $date=date("Y.m.d H:i");
-    $sql = "INSERT INTO NFC VALUES(1,$name,$email,$date)";
+    $date=date("YmdHis");
+    $sql = "INSERT INTO NFC VALUES(1,'$name','$email',$date)";
     $result = mysqli_query($conn, $sql);
     mysqli_close($conn);
 }

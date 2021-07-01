@@ -32,7 +32,7 @@ void loop() {
     printResponse();
     String name = "테스트";
     String email = "test@test.com";
-    String cmd = "GET http://211.207.147.143/DatabaseUpload.php?name=" + name + "&email=" + email + " HTTP/1.0";
+    String cmd = "GET http://211.207.147.143/NFC/DatabaseUpload.php?name=" + name + "&email=" + email + " HTTP/1.0";
 
     //GET할 주소 형식은 HTTP/1.0
     ESP8266.println("AT+CIPSEND=4," + String(cmd.length() + 4)); //데이터 전송
