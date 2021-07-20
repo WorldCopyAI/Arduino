@@ -52,6 +52,7 @@ void setup()
  
 void loop()
 {
+  HyperSensor();
   switch (count) {
   case 0:
     NFCRead();
@@ -61,9 +62,11 @@ void loop()
     TempSeneor();
     count = 2;
     break;
-    case 2:
-    HyperSensor();
-    count = 0;
+  case 2:
+    if(distance < 60){
+      delay(5000);
+      count = 0;
+    }
     break;
   default:
     Serial.println("ERROR");
@@ -180,13 +183,22 @@ void NFCRead()
 
 void TempSeneor()
 {
+  int temp[5];
+  int sum_temp;
+  int avr_temp;
   Serial.print("Ambient = "); 
   Serial.print(mlx.readAmbientTempC()); // 주변온도를 읽습니다.
-  Serial.print("*C\tObject = "); 
-  Serial.print(mlx.readObjectTempC()); Serial.println("*C"); //객체 온도를 읽습니다.
-
   Serial.println();
-  delay(1000);
+  for(int i = 0; i < 5; i++){           //5회측정
+  Serial.print("*C\tObject = "); 
+  temp[i] = mlx.readObjectTempC();
+  sum_temp += temp[i];
+  Serial.print(temp[i]); Serial.println("*C"); //객체 온도를 읽습니다.
+  Serial.println();
+  delay(500);
+  }
+  avr_temp = sum_temp/5;                        //평균값
+  Serial.print(avr_temp); Serial.println("*C");
 }
 
 void HyperSensor()
