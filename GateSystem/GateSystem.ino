@@ -13,6 +13,7 @@ const int echoPin = 24;    //Echo 핀 할당
 const int piezoPin = 26;  //Piezo 핀 할당
 
 int count = 0;
+long duration, distance;
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 Adafruit_PN532 nfc(PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
@@ -52,10 +53,12 @@ void setup()
  
 void loop()
 {
-  HyperSensor();
+  //HyperSensor();
+    
   switch (count) {
   case 0:
     NFCRead();
+    delay(2000);    //온도센서 준비시간
     count = 1;
     break;
   case 1:
@@ -71,7 +74,7 @@ void loop()
   default:
     Serial.println("ERROR");
     break;
-}
+  }
 }
 
 void NFCRead()
@@ -183,29 +186,31 @@ void NFCRead()
 
 void TempSeneor()
 {
-  int temp[5];
-  int sum_temp;
-  int avr_temp;
-  Serial.print("Ambient = "); 
-  Serial.print(mlx.readAmbientTempC()); // 주변온도를 읽습니다.
-  Serial.println();
-  for(int i = 0; i < 5; i++){           //5회측정
-  Serial.print("*C\tObject = "); 
-  temp[i] = mlx.readObjectTempC();
-  sum_temp += temp[i];
-  Serial.print(temp[i]); Serial.println("*C"); //객체 온도를 읽습니다.
-  Serial.println();
-  delay(500);
-  }
-  avr_temp = sum_temp/5;                        //평균값
-  Serial.print(avr_temp); Serial.println("*C");
+  int temp_count = 1;
+  float temp[5];
+  float sum_temp = 0;
+  float avr_temp;
+
+    for(int i = 0; i < 5; i++)           //5회측정
+    {
+      Serial.print("Ambient = "); 
+      Serial.print(mlx.readAmbientTempC()); // 주변온도를 읽습니다.
+      Serial.print("*C\tObject = "); 
+      temp[i] = mlx.readObjectTempC();
+      sum_temp += temp[i];
+      Serial.print(temp[i]); Serial.println("*C"); //객체 온도를 읽습니다.
+      Serial.println();
+      delay(500);
+    }
+    avr_temp = sum_temp/5;                        //평균값
+    Serial.print(avr_temp); Serial.println("*C");
 }
 
 void HyperSensor()
 {
-  long duration, distance;
- 
-    //Trig 핀으로 10us의 신호 발생
+  while(count < 2)
+  {
+  //Trig 핀으로 10us의 신호 발생
     digitalWrite(trigPin, LOW);       //Trig 핀 Low
     delayMicroseconds(2);             //2us 유지
     digitalWrite(trigPin, HIGH);      //Trig 핀 High
@@ -219,16 +224,5 @@ void HyperSensor()
     Serial.print(distance);
     Serial.println();
     delay(100);
-    
-    if(distance < 60){
-      for(int i=0;i<3;i++)
-      {
-        tone(piezoPin,1024,250);      //1초간 piezo울림(523은 주파수)
-        delay(250);                   //0.3초 대기
-        noTone(piezoPin);             //piezo출력 끔
-        tone(piezoPin,512,250);      //1초간 piezo울림(523은 주파수)
-        delay(250);                   //0.3초 대기
-        noTone(piezoPin);             //piezo출력 끔
-      }
-    }
+  }
 }
